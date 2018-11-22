@@ -7,4 +7,107 @@
     android:background="@drawable/background_color"
     tools:context=".StartStopActivity">
 
+    <TextView
+        android:id="@+id/steps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="85dp"
+        android:layout_marginLeft="85dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/steps"
+        app:layout_constraintBottom_toTopOf="@+id/measuredData"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/countedSteps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="1dp"
+        android:layout_marginRight="1dp"
+        android:layout_marginBottom="9dp"
+        android:text="Aici pasii"
+        app:layout_constraintBottom_toTopOf="@+id/measuredData"
+        app:layout_constraintEnd_toEndOf="@+id/measuredData" />
+
+    <TableLayout
+        android:id="@+id/measuredData"
+        android:layout_width="210dp"
+        android:layout_height="57dp"
+        android:layout_marginTop="107dp"
+        android:layout_marginBottom="105dp"
+        app:layout_constraintBottom_toBottomOf="@+id/startStopButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/date">
+
+        <TableRow
+            android:id="@+id/distance"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView android:text="@string/distance" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/time"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView android:text="@string/time" />
+
+            <TextView />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/avarageSpeed"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView android:text="@string/avarge_speed" />
+
+            <TextView />
+        </TableRow>
+    </TableLayout>
+
+    <Button
+        android:id="@+id/startStopButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="207dp"
+        android:background="@drawable/button_bg_rounded_corners"
+        android:text="@string/start"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/seeOnMap"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="64dp"
+        android:autoLink="all"
+        android:text="@string/see_on_map"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/startStopButton"
+        android:onClick="onClickSeeOnMap"
+        android:clickable="true"/>
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Aici data"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
 </android.support.constraint.ConstraintLayout>
