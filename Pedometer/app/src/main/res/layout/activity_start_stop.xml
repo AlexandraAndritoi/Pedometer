@@ -15,7 +15,7 @@
         android:layout_marginLeft="85dp"
         android:layout_marginBottom="8dp"
         android:text="@string/steps"
-        app:layout_constraintBottom_toTopOf="@+id/measuredData"
+        app:layout_constraintBottom_toTopOf="@+id/measuredDataTable"
         app:layout_constraintStart_toStartOf="parent" />
 
     <TextView
@@ -26,16 +26,17 @@
         android:layout_marginRight="1dp"
         android:layout_marginBottom="9dp"
         android:text="Aici pasii"
-        app:layout_constraintBottom_toTopOf="@+id/measuredData"
-        app:layout_constraintEnd_toEndOf="@+id/measuredData" />
+        app:layout_constraintBottom_toTopOf="@+id/measuredDataTable"
+        app:layout_constraintEnd_toEndOf="@+id/measuredDataTable" />
 
     <TableLayout
-        android:id="@+id/measuredData"
+        android:id="@+id/measuredDataTable"
         android:layout_width="210dp"
-        android:layout_height="57dp"
+        android:layout_height="wrap_content"
         android:layout_marginTop="107dp"
         android:layout_marginBottom="105dp"
-        app:layout_constraintBottom_toBottomOf="@+id/startStopButton"
+        android:visibility="invisible"
+        app:layout_constraintBottom_toBottomOf="@+id/startButton"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"
@@ -72,7 +73,7 @@
     </TableLayout>
 
     <Button
-        android:id="@+id/startStopButton"
+        android:id="@+id/startButton"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
@@ -82,6 +83,24 @@
         android:layout_marginBottom="207dp"
         android:background="@drawable/button_bg_rounded_corners"
         android:text="@string/start"
+        android:onClick="onClickStartButton"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+    <Button
+        android:id="@+id/stopButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="207dp"
+        android:background="@drawable/button_bg_rounded_corners"
+        android:onClick="onClickStopButton"
+        android:text="@string/stop"
+        android:visibility="invisible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
@@ -94,9 +113,10 @@
         android:layout_marginTop="64dp"
         android:autoLink="all"
         android:text="@string/see_on_map"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/startStopButton"
+        app:layout_constraintTop_toBottomOf="@+id/startButton"
         android:onClick="onClickSeeOnMap"
         android:clickable="true"/>
 
