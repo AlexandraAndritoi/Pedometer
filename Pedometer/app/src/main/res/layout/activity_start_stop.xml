@@ -25,7 +25,7 @@
         android:layout_marginEnd="1dp"
         android:layout_marginRight="1dp"
         android:layout_marginBottom="9dp"
-        android:text="Aici pasii"
+        android:text="0"
         app:layout_constraintBottom_toTopOf="@+id/measuredDataTable"
         app:layout_constraintEnd_toEndOf="@+id/measuredDataTable" />
 
