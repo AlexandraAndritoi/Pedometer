@@ -115,6 +115,6 @@ public class StartStopActivity extends AppCompatActivity implements SensorEventL
     @Override
     public void step(long timeNs) {
         numSteps++;
-        countedSteps.setText(numSteps);
+        countedSteps.setText(String.valueOf(numSteps));
     }
 }
