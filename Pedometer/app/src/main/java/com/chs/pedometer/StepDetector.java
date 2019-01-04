@@ -7,22 +7,7 @@ import android.hardware.SensorManager;
 import android.util.Log;
 
 public class StepDetector {
-    private static final int ACCEL_RING_SIZE = 50;
-    private static final int VEL_RING_SIZE = 10;
-
-    // change this threshold according to your sensitivity preferences
-    private static final float STEP_THRESHOLD = 50f;
-
-    private static final int STEP_DELAY_NS = 250000000;
-
-    private int accelRingCounter = 0;
-    private float[] accelRingX = new float[ACCEL_RING_SIZE];
-    private float[] accelRingY = new float[ACCEL_RING_SIZE];
-    private float[] accelRingZ = new float[ACCEL_RING_SIZE];
-    private int velRingCounter = 0;
-    private float[] velRing = new float[VEL_RING_SIZE];
     private long lastStepTimeNs = 0;
-    private float oldVelocityEstimate = 0;
 
     private StepListener listener;
 
