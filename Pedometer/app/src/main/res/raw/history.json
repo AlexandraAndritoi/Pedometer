@@ -1,0 +1,37 @@
+[
+  {
+    "day":"05/01/2019",
+    "distance":41,
+    "steps":67,
+    "speed":29,
+    "locations":[{"lat":75,"long":41},{"lat":86,"long":7},{"lat":71,"long":53},{"lat":19,"long":94}]
+  },
+  {
+    "day":"06/01/2019",
+    "distance":45,
+    "steps":91,
+    "speed":98,
+    "locations":[{"lat":35,"long":64},{"lat":60,"long":9},{"lat":45,"long":88},{"lat":20,"long":26}]
+  },
+  {
+    "day":"07/01/2019",
+    "distance":50,
+    "steps":81,
+    "speed":20,
+    "locations":[{"lat":80,"long":40}]
+  },
+  {
+    "day":"08/01/2019",
+    "distance":68,
+    "steps":29,
+    "speed":36,
+    "locations":[{"lat":74,"long":64},{"lat":14,"long":50}]
+  },
+  {
+    "day":"09/01/2019",
+    "distance":45,
+    "steps":7,
+    "speed":26,
+    "locations":[{"lat":96,"long":49},{"lat":16,"long":40},{"lat":98,"long":47}]
+  }
+]
