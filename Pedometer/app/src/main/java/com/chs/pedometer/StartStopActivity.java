@@ -107,8 +107,7 @@ public class StartStopActivity extends AppCompatActivity implements SensorEventL
     @Override
     public void onSensorChanged(SensorEvent event) {
         if (event.sensor.getType() == Sensor.TYPE_ACCELEROMETER) {
-            simpleStepDetector.updateAccel(
-                    event.timestamp, event.values[0], event.values[1], event.values[2]);
+            simpleStepDetector.updateAccel( event.timestamp, event);
         }
     }
 
