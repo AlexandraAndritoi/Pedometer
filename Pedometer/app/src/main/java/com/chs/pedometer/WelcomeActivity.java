@@ -17,5 +17,6 @@ public class WelcomeActivity extends AppCompatActivity {
     {
         Intent intent = new Intent(WelcomeActivity.this, StartStopActivity.class);
         startActivity(intent);
+        WelcomeActivity.this.finish();
     }
 }
