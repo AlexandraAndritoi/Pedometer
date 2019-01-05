@@ -14,11 +14,16 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
 public class StartStopActivity extends AppCompatActivity implements SensorEventListener, StepListener{
 
     Button startButton;
     Button stopButton;
     TableLayout measuredDataTable;
+    TextView dateTextView;
     TextView seeOnMapTextView;
     TextView countedSteps;
     SensorManager sensorManager;
@@ -34,6 +39,7 @@ public class StartStopActivity extends AppCompatActivity implements SensorEventL
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_stop);
         findViewsById();
+        setDate(dateTextView);
 
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         accelerator = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -41,10 +47,19 @@ public class StartStopActivity extends AppCompatActivity implements SensorEventL
         simpleStepDetector.registerListener(this);
     }
 
+    public void setDate (TextView view){
+
+        Date today = Calendar.getInstance().getTime();
+        SimpleDateFormat formatter = new SimpleDateFormat("EEE, d MMM, yyyy");
+        String date = formatter.format(today);
+        view.setText(date);
+    }
+
     private void findViewsById() {
         startButton = (Button) findViewById(R.id.startButton);
         stopButton = (Button) findViewById(R.id.stopButton);
         measuredDataTable = (TableLayout) findViewById(R.id.measuredDataTable);
+        dateTextView = findViewById(R.id.date);
         seeOnMapTextView = (TextView) findViewById(R.id.seeOnMap);
         countedSteps = (TextView)findViewById(R.id.countedSteps);
         sensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
