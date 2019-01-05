@@ -6,6 +6,9 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -18,7 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
-public class StartStopActivity extends AppCompatActivity implements SensorEventListener, StepListener{
+public class StartStopActivity extends AppCompatActivity implements SensorEventListener, StepListener, LocationListener{
 
     Button startButton;
     Button stopButton;
@@ -32,6 +35,8 @@ public class StartStopActivity extends AppCompatActivity implements SensorEventL
     private StepDetector simpleStepDetector;
     private Sensor accelerator;
     private int numSteps;
+
+    private LocationManager locationManager;
 
 
     @Override
@@ -92,6 +97,18 @@ public class StartStopActivity extends AppCompatActivity implements SensorEventL
 
         numSteps = 0;
         sensorManager.registerListener(StartStopActivity.this, accelerator, SensorManager.SENSOR_DELAY_FASTEST);
+
+        requestLocationUpdateEverySecond();
+    }
+
+    private void requestLocationUpdateEverySecond() {
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        try {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, this);
+            this.onLocationChanged(null);
+        } catch (SecurityException se) {
+            Toast.makeText(this, "Permission Access Location Denied!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void onClickStopButton(View v){
@@ -100,6 +117,8 @@ public class StartStopActivity extends AppCompatActivity implements SensorEventL
         measuredDataTable.setVisibility(View.VISIBLE);
 
         sensorManager.unregisterListener(StartStopActivity.this);
+
+        locationManager.removeUpdates(this);
     }
 
     public void onClickSeeOnMap(View v){
@@ -130,5 +149,25 @@ public class StartStopActivity extends AppCompatActivity implements SensorEventL
     public void step(long timeNs) {
         numSteps++;
         countedSteps.setText(String.valueOf(numSteps));
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        //save location here
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
     }
 }
