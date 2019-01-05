@@ -198,13 +198,14 @@ public class StartStopActivity extends AppCompatActivity implements SensorEventL
     public Double getSpeed(int d, int t)
     {
         Double v = (double)d/t;
+        v= (v * 1000.0)/3600.0;
         v = v * 100.0;
         return v.intValue()/100.0;
     }
 
     public String getSpeedToString(Double v)
     {
-        return v + " m/s";
+        return v + " km/h";
     }
 
     public History getHistoryJSON() {
