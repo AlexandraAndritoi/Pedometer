@@ -6,6 +6,9 @@ import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.View;
@@ -14,11 +17,16 @@ import android.widget.TableLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
-public class StartStopActivity extends AppCompatActivity implements SensorEventListener, StepListener{
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+
+public class StartStopActivity extends AppCompatActivity implements SensorEventListener, StepListener, LocationListener{
 
     Button startButton;
     Button stopButton;
     TableLayout measuredDataTable;
+    TextView dateTextView;
     TextView seeOnMapTextView;
     TextView countedSteps;
     SensorManager sensorManager;
@@ -28,12 +36,15 @@ public class StartStopActivity extends AppCompatActivity implements SensorEventL
     private Sensor accelerator;
     private int numSteps;
 
+    private LocationManager locationManager;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_start_stop);
         findViewsById();
+        setDate(dateTextView);
 
         sensorManager = (SensorManager) getSystemService(SENSOR_SERVICE);
         accelerator = sensorManager.getDefaultSensor(Sensor.TYPE_ACCELEROMETER);
@@ -41,10 +52,19 @@ public class StartStopActivity extends AppCompatActivity implements SensorEventL
         simpleStepDetector.registerListener(this);
     }
 
+    public void setDate (TextView view){
+
+        Date today = Calendar.getInstance().getTime();
+        SimpleDateFormat formatter = new SimpleDateFormat("EEE, d MMM, yyyy");
+        String date = formatter.format(today);
+        view.setText(date);
+    }
+
     private void findViewsById() {
         startButton = (Button) findViewById(R.id.startButton);
         stopButton = (Button) findViewById(R.id.stopButton);
         measuredDataTable = (TableLayout) findViewById(R.id.measuredDataTable);
+        dateTextView = findViewById(R.id.date);
         seeOnMapTextView = (TextView) findViewById(R.id.seeOnMap);
         countedSteps = (TextView)findViewById(R.id.countedSteps);
         sensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
@@ -77,6 +97,18 @@ public class StartStopActivity extends AppCompatActivity implements SensorEventL
 
         numSteps = 0;
         sensorManager.registerListener(StartStopActivity.this, accelerator, SensorManager.SENSOR_DELAY_FASTEST);
+
+        requestLocationUpdateEverySecond();
+    }
+
+    private void requestLocationUpdateEverySecond() {
+        locationManager = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
+        try {
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1000, 0, this);
+            this.onLocationChanged(null);
+        } catch (SecurityException se) {
+            Toast.makeText(this, "Permission Access Location Denied!", Toast.LENGTH_SHORT).show();
+        }
     }
 
     public void onClickStopButton(View v){
@@ -85,6 +117,8 @@ public class StartStopActivity extends AppCompatActivity implements SensorEventL
         measuredDataTable.setVisibility(View.VISIBLE);
 
         sensorManager.unregisterListener(StartStopActivity.this);
+
+        locationManager.removeUpdates(this);
     }
 
     public void onClickSeeOnMap(View v){
@@ -115,5 +149,25 @@ public class StartStopActivity extends AppCompatActivity implements SensorEventL
     public void step(long timeNs) {
         numSteps++;
         countedSteps.setText(String.valueOf(numSteps));
+    }
+
+    @Override
+    public void onLocationChanged(Location location) {
+        //save location here
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
     }
 }
