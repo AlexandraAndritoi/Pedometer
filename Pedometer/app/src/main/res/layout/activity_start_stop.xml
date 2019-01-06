@@ -31,7 +31,7 @@
 
     <TableLayout
         android:id="@+id/measuredDataTable"
-        android:layout_width="210dp"
+        android:layout_width="259dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="107dp"
         android:layout_marginBottom="105dp"
@@ -49,6 +49,13 @@
 
             <TextView android:text="@string/distance" />
 
+            <TextView
+                android:id="@+id/measuredDistance"
+                android:layout_width="166dp"
+                android:layout_height="fill_parent"
+                android:gravity="right"
+                android:text="" />
+
         </TableRow>
 
         <TableRow
@@ -58,7 +65,11 @@
 
             <TextView android:text="@string/time" />
 
-            <TextView />
+            <TextView
+                android:id="@+id/measuredTime"
+                android:layout_width="fill_parent"
+                android:gravity="right"
+                android:text="" />
         </TableRow>
 
         <TableRow
@@ -68,7 +79,11 @@
 
             <TextView android:text="@string/avarge_speed" />
 
-            <TextView />
+            <TextView
+                android:id="@+id/measuredSpeed"
+                android:layout_width="fill_parent"
+                android:gravity="right"
+                android:text="" />
         </TableRow>
     </TableLayout>
 

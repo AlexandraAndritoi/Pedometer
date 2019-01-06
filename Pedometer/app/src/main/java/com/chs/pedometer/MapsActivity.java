@@ -33,8 +33,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private final long MIN_DIST = 5;
     private String jsonString;
     private File file;
-    private String fileName = "history.json";
-    private String filePath = getBaseContext().getFilesDir().getAbsolutePath() + "/" + fileName;
+    private String fileName = "history9.json";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -94,6 +93,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public History getHistoryJSON() {
+        String filePath = getBaseContext().getFilesDir().getAbsolutePath() + "/" + fileName;
         JSONResourceReader reader = new JSONResourceReader(filePath);
         History jsonObj = reader.constructUsingGson(History.class);
 

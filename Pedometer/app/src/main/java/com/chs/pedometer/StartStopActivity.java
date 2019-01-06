@@ -37,6 +37,9 @@ public class StartStopActivity extends AppCompatActivity implements SensorEventL
     TextView countedSteps;
     SensorManager sensorManager;
     boolean running = false;
+    TextView measuredTime;
+    TextView measuredDistance;
+    TextView measuredSpeed;
 
     private StepDetector simpleStepDetector;
     private Sensor accelerator;
@@ -46,8 +49,9 @@ public class StartStopActivity extends AppCompatActivity implements SensorEventL
     private ArrayList<Point> newLocations;
 
     private File file;
-    private String fileName = "history7.json";
+    private String fileName = "history9.json";
 
+    Stopwatch timer = new Stopwatch();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -65,11 +69,11 @@ public class StartStopActivity extends AppCompatActivity implements SensorEventL
         if(!isFilePresent(fileName)){
             file = new File(filePath);
             file.setWritable(true);
-            String fileContents = "{\"routes\":[]}";
+            String initialFileContent = "{\"routes\":[]}";
             FileOutputStream outputStream;
             try {
                 outputStream = openFileOutput(fileName, Context.MODE_PRIVATE);
-                outputStream.write(fileContents.getBytes());
+                outputStream.write(initialFileContent.getBytes());
                 outputStream.close();
             } catch (Exception e) {
                 e.printStackTrace();
@@ -92,14 +96,20 @@ public class StartStopActivity extends AppCompatActivity implements SensorEventL
         seeOnMapTextView = (TextView) findViewById(R.id.seeOnMap);
         countedSteps = (TextView)findViewById(R.id.countedSteps);
         sensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
+        measuredTime = (TextView) findViewById(R.id.measuredTime);
+        measuredDistance = (TextView) findViewById(R.id.measuredDistance);
+        measuredSpeed = (TextView) findViewById(R.id.measuredSpeed);
+
     }
 
     @Override
     protected void onResume() {
         super.onResume();
+//        running = true;
+//        Sensor countStepsSensor = sensorManager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER);
 
         if(accelerator != null) {
-            sensorManager.registerListener(this, accelerator, sensorManager.SENSOR_DELAY_UI);
+            //sensorManager.registerListener(this, accelerator, sensorManager.SENSOR_DELAY_UI);
         } else {
             Toast.makeText(this, "Sensor not found!", Toast.LENGTH_SHORT).show();
         }
@@ -119,7 +129,14 @@ public class StartStopActivity extends AppCompatActivity implements SensorEventL
 
         numSteps = 0;
         sensorManager.registerListener(StartStopActivity.this, accelerator, SensorManager.SENSOR_DELAY_FASTEST);
+
         newLocations = new ArrayList<>();
+
+        timer.start();
+        measuredSpeed.setText("");
+        measuredTime.setText("");
+        measuredDistance.setText("");
+        measuredDataTable.setVisibility(View.INVISIBLE);
 
         requestLocationUpdateEverySecond();
     }
@@ -135,9 +152,13 @@ public class StartStopActivity extends AppCompatActivity implements SensorEventL
     }
 
     public void onClickStopButton(View v){
+        timer.stop();
         startButton.setVisibility(View.VISIBLE);
         stopButton.setVisibility(View.INVISIBLE);
         measuredDataTable.setVisibility(View.VISIBLE);
+        measuredDistance.append(distanceToString(this.getDistance()));
+        measuredTime.append(timer.ToString());
+        measuredSpeed.append(getSpeedToString(getSpeed(this.getDistance(),(int)timer.getElapsedTime())));
 
         sensorManager.unregisterListener(StartStopActivity.this);
 
@@ -191,9 +212,7 @@ public class StartStopActivity extends AppCompatActivity implements SensorEventL
         Date date = new Date();
         String currentDayString = "" + dateFormat.format(date);
 
-        String filePath = getBaseContext().getFilesDir().getAbsolutePath() + "/" + fileName;
-        JSONResourceReader reader = new JSONResourceReader(filePath);
-        History historyJSON = reader.constructUsingGson(History.class);
+        History historyJSON = getHistoryJSON();
 
         ArrayList<Route> routes = historyJSON.getRoutes();
         Route route = null;
@@ -263,4 +282,70 @@ public class StartStopActivity extends AppCompatActivity implements SensorEventL
         return file.exists();
     }
 
+    public Double getSpeed(int d, int t)
+    {
+        Double v = (double)d/t;
+        v= (v * 1000.0)/3600.0;
+        v = v * 100.0;
+        return v.intValue()/100.0;
+    }
+
+    public String getSpeedToString(Double v)
+    {
+        return v + " km/h";
+    }
+
+    public int getDistance()
+    {
+        int R=6371,dist;
+        Double dLat,dLon,lat1,lat2,long1,long2,a,c,d=0.0;
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
+        Date date = new Date();
+        String currentDayString = "" + dateFormat.format(date);
+
+        History historyJSON = getHistoryJSON();
+        ArrayList<Route> routes = historyJSON.getRoutes();
+
+        for(int rout = 0; rout < routes.size(); rout++) {
+            String day = routes.get(rout).getDay();
+            if(day.equals(currentDayString)){
+                ArrayList<Point> locations = routes.get(rout).getLocations();
+                if(locations.size() > 0) {
+
+                    for(int loc = 0; loc < locations.size()-1; loc++) {
+                        lat1 = locations.get(loc).getLatitude();
+                        long1 = locations.get(loc).getLongitude();
+                        lat2 = locations.get(loc).getLatitude();
+                        long2 = locations.get(loc + 1).getLongitude();
+                        dLat = deg2rad(lat2-lat1);
+                        dLon = deg2rad(long2-long1);
+                        a =Math.sin(dLat/2) * Math.sin(dLat/2) + Math.cos(deg2rad(lat1)) * Math.cos(deg2rad(lat2)) * Math.sin(dLon/2) * Math.sin(dLon/2);
+                        c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1-a));
+                        d+=R * c;
+                    }
+                    d=d*1000;
+                    dist = d.intValue();
+                    return dist;
+                }
+            }
+        }
+        return 0;
+    }
+
+    public String distanceToString(int dist)
+    {
+        return dist/1000 + " km  " + dist%1000 + " m";
+    }
+
+    public Double deg2rad(Double deg) {
+        return deg * (Math.PI/180);
+    }
+
+    public History getHistoryJSON() {
+        String filePath = getBaseContext().getFilesDir().getAbsolutePath() + "/" + fileName;
+        JSONResourceReader reader = new JSONResourceReader(filePath);
+        History jsonObj = reader.constructUsingGson(History.class);
+
+        return jsonObj;
+    }
 }
