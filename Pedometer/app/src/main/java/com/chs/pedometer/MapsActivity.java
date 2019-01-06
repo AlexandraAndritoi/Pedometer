@@ -18,6 +18,7 @@ import com.google.android.gms.maps.model.MarkerOptions;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 
+import java.io.File;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -31,6 +32,9 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private final long MIN_TIME = 1000; // 1 sec
     private final long MIN_DIST = 5;
     private String jsonString;
+    private File file;
+    private String fileName = "history.json";
+    private String filePath = getBaseContext().getFilesDir().getAbsolutePath() + "/" + fileName;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,19 +67,19 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
         String currentDayString = "" + dateFormat.format(date);
 
         History historyJSON = getHistoryJSON();
-        Route routes[] = historyJSON.getRoutes();
+        ArrayList<Route> routes = historyJSON.getRoutes();
 
-        for(int rout = 0; rout < routes.length; rout++) {
-            String day = routes[rout].day;
+        for(int rout = 0; rout < routes.size(); rout++) {
+            String day = routes.get(rout).day;
             if(day.equals(currentDayString)){
-                Location locations[] = routes[rout].getLocations();
-                if(locations.length > 0) {
+                ArrayList<Point> locations = routes.get(rout).getLocations();
+                if(locations.size() > 0) {
                     ArrayList<LatLng> points = new ArrayList();
                     PolylineOptions polyLineOptions = new PolylineOptions();
                     Polyline line = mMap.addPolyline(polyLineOptions.width(3).color(Color.RED));
-                    for(int loc = 0; loc < locations.length; loc++) {
-                        Double latitude = locations[loc].getLatitude();
-                        Double longitude = locations[loc].getLongitude();
+                    for(int loc = 0; loc < locations.size(); loc++) {
+                        Double latitude = locations.get(loc).getLatitude();
+                        Double longitude = locations.get(loc).getLongitude();
                         LatLng point = new LatLng(latitude,longitude);
                         points.add(point);
                         String title = "Point" + loc;
@@ -90,7 +94,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     }
 
     public History getHistoryJSON() {
-        JSONResourceReader reader = new JSONResourceReader(getResources(), R.raw.history);
+        JSONResourceReader reader = new JSONResourceReader(filePath);
         History jsonObj = reader.constructUsingGson(History.class);
 
         return jsonObj;

@@ -1,10 +1,10 @@
 package com.chs.pedometer;
 
-public class Location {
+public class Point {
     public Double latitude;
     public Double longitude;
 
-    public Location(Double latitude, Double longitude) {
+    public Point(Double latitude, Double longitude) {
         this.latitude = latitude;
         this.longitude = longitude;
     }
@@ -24,5 +24,4 @@ public class Location {
     public void setLongitude(Double longitude) {
         this.longitude = longitude;
     }
-
 }
