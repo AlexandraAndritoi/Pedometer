@@ -4,24 +4,26 @@ import java.util.ArrayList;
 
 public class Route {
     public String day;
-    public Double distance;
+    public int distance;
     public Double speed;
     public int steps;
     public ArrayList<Point> locations;
+    public long time;
 
-    public Route(String day, Double distance, Double speed, int steps, ArrayList<Point> locations) {
+    public Route(String day, int distance, Double speed, int steps, long time, ArrayList<Point> locations) {
         this.day = day;
         this.distance = distance;
         this.speed = speed;
         this.steps = steps;
         this.locations = locations;
+        this.time = time;
     }
 
     public String getDay() {
         return day;
     }
 
-    public Double getDistance() {
+    public int getDistance() {
         return distance;
     }
 
@@ -49,7 +51,7 @@ public class Route {
         this.day = day;
     }
 
-    public void setDistance(Double distance) {
+    public void setDistance(int distance) {
         this.distance = distance;
     }
 
@@ -59,5 +61,13 @@ public class Route {
 
     public void setSteps(int steps) {
         this.steps = steps;
+    }
+
+    public long getTime() {
+        return time;
+    }
+
+    public void setTime(long time) {
+        this.time = time;
     }
 }

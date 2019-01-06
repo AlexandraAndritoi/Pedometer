@@ -33,7 +33,7 @@ public class MapsActivity extends FragmentActivity implements OnMapReadyCallback
     private final long MIN_DIST = 5;
     private String jsonString;
     private File file;
-    private String fileName = "history9.json";
+    private String fileName = "history10.json";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

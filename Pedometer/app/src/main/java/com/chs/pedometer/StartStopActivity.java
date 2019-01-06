@@ -49,7 +49,7 @@ public class StartStopActivity extends AppCompatActivity implements SensorEventL
     private ArrayList<Point> newLocations;
 
     private File file;
-    private String fileName = "history9.json";
+    private String fileName = "history10.json";
 
     Stopwatch timer = new Stopwatch();
 
@@ -156,9 +156,9 @@ public class StartStopActivity extends AppCompatActivity implements SensorEventL
         startButton.setVisibility(View.VISIBLE);
         stopButton.setVisibility(View.INVISIBLE);
         measuredDataTable.setVisibility(View.VISIBLE);
-        measuredDistance.append(distanceToString(this.getDistance()));
+        measuredDistance.append(distanceToString(this.getComputedDistance()));
         measuredTime.append(timer.ToString());
-        measuredSpeed.append(getSpeedToString(getSpeed(this.getDistance(),(int)timer.getElapsedTime())));
+        measuredSpeed.append(getSpeedToString(getAverageSpeed(this.getComputedDistance(),(int)timer.getElapsedTime())));
 
         sensorManager.unregisterListener(StartStopActivity.this);
 
@@ -212,6 +212,13 @@ public class StartStopActivity extends AppCompatActivity implements SensorEventL
         Date date = new Date();
         String currentDayString = "" + dateFormat.format(date);
 
+        CharSequence cStepsText =  countedSteps.getText();
+        int cStepsInt = Integer.parseInt(cStepsText.toString());
+        int mDistanceInt = getComputedDistance();
+        Double mSpeedDouble = getAverageSpeed(this.getComputedDistance(),(int)timer.getElapsedTime());
+        long mTimeLong = timer.getElapsedTime();
+
+
         History historyJSON = getHistoryJSON();
 
         ArrayList<Route> routes = historyJSON.getRoutes();
@@ -224,19 +231,36 @@ public class StartStopActivity extends AppCompatActivity implements SensorEventL
             if(day.equals(currentDayString)){
                 currentDayFound = true;
                 route = historyJSON.getRoutes().get(rout);
+                //set locations for new route
                 loc.addAll(historyJSON.getRoutes().get(rout).getLocations());
                 loc.addAll(newLocations);
                 routeIndex = rout;
                 route.setLocations(loc);
+                //set parameters of new route
+                int oldSteps = route.getSteps();
+                long oldTime = route.getTime();
+                int oldDistance = route.getDistance();
+                Double oldSpeed = route.getSpeed();
+                int totalDistance = oldDistance + mDistanceInt;
+                long totalTime = oldTime + mTimeLong;
+                Double avgSpeed = getAverageSpeed(totalDistance,(int)totalTime);
+
+                route.setSteps(oldSteps + cStepsInt);
+                route.setTime(totalTime);
+                route.setDistance(totalDistance);
+                route.setSpeed(avgSpeed);
+
             }
         }
         if(currentDayFound == false) {
             ArrayList<Point> newLocation = new ArrayList<>();
-            Double newDistance = 0.; //TODO: compute distance
-            Double newSpeed = 0.; //TODO: compute speed
-            int newSteps = 0; //TODO: compute steps
+            int newDistance = mDistanceInt;
+            Double newSpeed = mSpeedDouble;
+            int newSteps = cStepsInt;
+            long newTime = mTimeLong;
             newLocation.addAll(newLocations);
-            Route newRoute = new Route(currentDayString, newDistance, newSpeed, newSteps, newLocation);
+
+            Route newRoute = new Route(currentDayString, newDistance, newSpeed, newSteps, newTime, newLocation);
             routes.add(newRoute);
             historyJSON.setRoutes(routes);
         } else {
@@ -251,7 +275,7 @@ public class StartStopActivity extends AppCompatActivity implements SensorEventL
         String jsonStr = gsonObj.toJson(historyJSON);
         System.out.println("STRING JSON: " + jsonStr);
         FileOutputStream outputStream;
-
+        // write new route in json file
         try {
             outputStream = openFileOutput(fileName, Context.MODE_PRIVATE);
             outputStream.write(jsonStr.getBytes());
@@ -282,7 +306,7 @@ public class StartStopActivity extends AppCompatActivity implements SensorEventL
         return file.exists();
     }
 
-    public Double getSpeed(int d, int t)
+    public Double getAverageSpeed(int d, int t)
     {
         Double v = (double)d/t;
         v= (v * 1000.0)/3600.0;
@@ -295,7 +319,7 @@ public class StartStopActivity extends AppCompatActivity implements SensorEventL
         return v + " km/h";
     }
 
-    public int getDistance()
+    public int getComputedDistance()
     {
         int R=6371,dist;
         Double dLat,dLon,lat1,lat2,long1,long2,a,c,d=0.0;
