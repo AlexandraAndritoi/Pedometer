@@ -32,6 +32,7 @@ public class StartStopActivity extends AppCompatActivity implements SensorEventL
 
     Button startButton;
     Button stopButton;
+    Button historyButton;
     TableLayout measuredDataTable;
     TextView dateTextView;
     TextView seeOnMapTextView;
@@ -74,6 +75,7 @@ public class StartStopActivity extends AppCompatActivity implements SensorEventL
     private void findViewsById() {
         startButton = (Button) findViewById(R.id.startButton);
         stopButton = (Button) findViewById(R.id.stopButton);
+        historyButton = (Button) findViewById(R.id.historyButton);
         measuredDataTable = (TableLayout) findViewById(R.id.measuredDataTable);
         dateTextView = findViewById(R.id.date);
         seeOnMapTextView = (TextView) findViewById(R.id.seeOnMap);
@@ -156,6 +158,13 @@ public class StartStopActivity extends AppCompatActivity implements SensorEventL
 //            countedSteps.setText(String.valueOf(sensorEvent.values[0]));
 //        }
 //    }
+
+    public void onClickHistoryButton(View v)
+    {
+        Intent intent = new Intent(StartStopActivity.this, HistoryActivity.class);
+        startActivity(intent);
+        //WelcomeActivity.this.finish();
+    }
 
     @Override
     public void onAccuracyChanged(Sensor sensor, int i) {
