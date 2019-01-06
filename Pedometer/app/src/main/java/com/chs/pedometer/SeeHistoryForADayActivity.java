@@ -2,6 +2,7 @@ package com.chs.pedometer;
 
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.hardware.SensorManager;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
@@ -10,7 +11,14 @@ import android.widget.Button;
 import android.widget.TableLayout;
 import android.widget.TextView;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.maps.model.Polyline;
+import com.google.android.gms.maps.model.PolylineOptions;
+
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -25,6 +33,7 @@ public class SeeHistoryForADayActivity extends AppCompatActivity {
     TextView measuredSpeed;
 
     private String fileName = "history10.json";
+    String selectedDate;
 
     Stopwatch timer = new Stopwatch();
 
@@ -32,30 +41,31 @@ public class SeeHistoryForADayActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_see_history_for_aday);
+
         findViewsById();
         setDate(dateTextView);
+        setDayParameters();
     }
     public void setDate (TextView view){
-        Date today = Calendar.getInstance().getTime();
-        SimpleDateFormat formatter = new SimpleDateFormat("EEE, d MMM, yyyy");
-        String date = formatter.format(today);
-        view.setText(date);
+        Bundle bundle = getIntent().getExtras();
+        selectedDate = (String) bundle.get("selectedDay");
+        view.setText(selectedDate);
     }
 
-    public void setCountedSteps(TextView view) {
+    public void setDayParameters() {
+        History historyJSON = getHistoryJSON();
+        ArrayList<Route> routes = historyJSON.getRoutes();
 
-    }
-
-    public void setMeasuredTime(TextView view) {
-
-    }
-
-    public void setMeasuredDistance(TextView view) {
-
-    }
-
-    public void setMeasuredSpeed(TextView view) {
-
+        for(int rout = 0; rout < routes.size(); rout++) {
+            Route route = routes.get(rout);
+            String day = route.getDay();
+            if(day.equals(selectedDate)){
+                countedSteps.setText("" + route.getSteps());
+                measuredDistance.setText("" + route.getDistance());
+                measuredSpeed.setText("" + route.getSpeed());
+                measuredTime.setText("" + route.getTime());
+            }
+        }
     }
 
     private void findViewsById() {
@@ -76,6 +86,9 @@ public class SeeHistoryForADayActivity extends AppCompatActivity {
 
     public void seeRouteOnMap(View v){
         Intent intent = new Intent(this, HistoryMapsActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("selectedDay", selectedDate);
+        intent.putExtras(bundle);
         startActivity(intent);
 
         //File f = new File(getBaseContext().getFilesDir().getAbsolutePath() + "/history.json");

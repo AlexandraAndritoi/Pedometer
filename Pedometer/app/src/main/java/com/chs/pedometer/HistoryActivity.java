@@ -1,5 +1,6 @@
 package com.chs.pedometer;
 
+import android.content.Intent;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
@@ -9,6 +10,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Gravity;
 import android.view.View;
 
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.LinearLayout;
 import android.widget.TableLayout;
@@ -57,12 +59,21 @@ public class HistoryActivity extends AppCompatActivity {
             btn1.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View view) {
                         buttonText = finalBtn.getText().toString();
+                        goToDayHistory();
                     }
                 });
-            }
+        }
 
         }
-        
+
+    public void goToDayHistory () {
+        Intent intent = new Intent(this, SeeHistoryForADayActivity.class);
+        Bundle bundle = new Bundle();
+        bundle.putString("selectedDay", buttonText);
+        intent.putExtras(bundle);
+        startActivity(intent);
+    }
+
     public History getHistoryJSON() {
         String filePath = getBaseContext().getFilesDir().getAbsolutePath() + "/" + fileName;
         JSONResourceReader reader = new JSONResourceReader(filePath);

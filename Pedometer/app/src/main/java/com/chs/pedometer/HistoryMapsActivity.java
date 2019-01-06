@@ -26,6 +26,7 @@ public class HistoryMapsActivity extends FragmentActivity implements OnMapReadyC
     private GoogleMap mMap;
 
     private String fileName = "history10.json";
+    private String selectedDate;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -54,16 +55,17 @@ public class HistoryMapsActivity extends FragmentActivity implements OnMapReadyC
     public void onMapReady(GoogleMap googleMap) {
         mMap = googleMap;
 
-        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd");
-        Date date = new Date();
-        String currentDayString = "" + dateFormat.format(date);
+        Bundle bundle = getIntent().getExtras();
+        selectedDate = (String) bundle.get("selectedDay");
 
         History historyJSON = getHistoryJSON();
         ArrayList<Route> routes = historyJSON.getRoutes();
 
+
+
         for(int rout = 0; rout < routes.size(); rout++) {
             String day = routes.get(rout).day;
-            if(day.equals(currentDayString)){
+            if(day.equals(selectedDate)){
                 ArrayList<Point> locations = routes.get(rout).getLocations();
                 if(locations.size() > 0) {
                     ArrayList<LatLng> points = new ArrayList();
