@@ -70,6 +70,7 @@ public class StartStopActivity extends AppCompatActivity implements SensorEventL
         if(!isFilePresent(fileName)){
             file = new File(filePath);
             file.setWritable(true);
+            //String initialFileContent = "{\"routes\":[{\"day\":\"2019/01/05\",\"distance\":41,\"steps\":67,\"speed\":29,\"locations\":[{\"latitude\":45.988507,\"longitude\":20.660400},{\"latitude\":45.988582,\"longitude\":20.660845},{\"latitude\":45.988742,\"longitude\":20.661736},{\"latitude\":45.988809,\"longitude\":20.662138},{\"latitude\":45.989152,\"longitude\":20.662009}]}";
             String initialFileContent = "{\"routes\":[]}";
             FileOutputStream outputStream;
             try {
@@ -94,7 +95,7 @@ public class StartStopActivity extends AppCompatActivity implements SensorEventL
         stopButton = (Button) findViewById(R.id.stopButton);
         historyButton = (Button) findViewById(R.id.historyButton);
         measuredDataTable = (TableLayout) findViewById(R.id.measuredDataTable);
-        dateTextView = findViewById(R.id.date);
+        dateTextView = findViewById(R.id.date2);
         seeOnMapTextView = (TextView) findViewById(R.id.seeOnMap);
         countedSteps = (TextView)findViewById(R.id.countedSteps);
         sensorManager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);

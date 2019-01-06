@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".SeeHistoryForADayActivity">
+
+    <TextView
+        android:id="@+id/steps"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="85dp"
+        android:layout_marginLeft="85dp"
+        android:layout_marginBottom="8dp"
+        android:text="@string/steps"
+        app:layout_constraintBottom_toTopOf="@+id/measuredDataTable2"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/countedSteps2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="1dp"
+        android:layout_marginRight="1dp"
+        android:layout_marginBottom="9dp"
+        android:text="0"
+        app:layout_constraintBottom_toTopOf="@+id/measuredDataTable2"
+        app:layout_constraintEnd_toEndOf="@+id/measuredDataTable2" />
+
+    <TableLayout
+        android:id="@+id/measuredDataTable2"
+        android:layout_width="259dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="107dp"
+        android:layout_marginBottom="105dp"
+        app:layout_constraintBottom_toBottomOf="@+id/startButton"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/date2">
+
+        <TableRow
+            android:id="@+id/distance"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView android:text="@string/distance" />
+
+            <TextView
+                android:id="@+id/measuredDistance2"
+                android:layout_width="166dp"
+                android:layout_height="fill_parent"
+                android:gravity="right"
+                android:text="" />
+
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/time"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView android:text="@string/time" />
+
+            <TextView
+                android:id="@+id/measuredTime2"
+                android:layout_width="fill_parent"
+                android:gravity="right"
+                android:text="" />
+        </TableRow>
+
+        <TableRow
+            android:id="@+id/avarageSpeed"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <TextView android:text="@string/avarge_speed" />
+
+            <TextView
+                android:id="@+id/measuredSpeed2"
+                android:layout_width="fill_parent"
+                android:gravity="right"
+                android:text="" />
+        </TableRow>
+    </TableLayout>
+
+    <Button
+        android:id="@+id/seeOnMapButton"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginBottom="207dp"
+        android:background="@drawable/button_bg_rounded_corners"
+        android:onClick="seeRouteOnMap"
+        android:text="@string/see_on_map"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.5"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <TextView
+        android:id="@+id/date2"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:text="Aici data"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+</android.support.constraint.ConstraintLayout>

@@ -45,7 +45,11 @@
         <activity
             android:name=".HistoryActivity"
             android:label="History"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity
+            android:name=".HistoryMapsActivity"
+            android:label="@string/title_activity_history_maps" />
+        <activity android:name=".SeeHistoryForADayActivity"></activity>
     </application>
 
 </manifest>
