@@ -1,24 +1,23 @@
 package com.chs.pedometer;
 
-import android.content.res.Resources;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import java.io.BufferedReader;
-import java.io.InputStream;
+import java.io.FileInputStream;
 import java.io.InputStreamReader;
 import java.io.StringWriter;
 import java.io.Writer;
 
 public class JSONResourceReader {
     private String jsonString;
+    FileInputStream file;
 
-    public JSONResourceReader(Resources resources, int id) {
-        InputStream resourceReader = resources.openRawResource(id);
+    public JSONResourceReader(String filePath) {
         Writer writer = new StringWriter();
         try {
-            BufferedReader reader = new BufferedReader(new InputStreamReader(resourceReader, "UTF-8"));
+            file = new FileInputStream(filePath);
+            BufferedReader reader = new BufferedReader(new InputStreamReader(file));
             String line = reader.readLine();
             while (line != null) {
                 writer.write(line);
@@ -28,7 +27,7 @@ public class JSONResourceReader {
             e.printStackTrace();
         } finally {
             try {
-                resourceReader.close();
+                file.close();
             } catch (Exception e) {
                 e.printStackTrace();
             }
