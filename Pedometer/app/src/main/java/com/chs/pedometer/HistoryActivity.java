@@ -24,6 +24,7 @@ import java.util.Date;
 public class HistoryActivity extends AppCompatActivity {
 
     private String fileName = "history10.json";
+    private String buttonText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -52,17 +53,16 @@ public class HistoryActivity extends AppCompatActivity {
 
             linear.addView(btn, params);
             btn1 = ((Button) findViewById(id_));
+            final Button finalBtn = btn1;
             btn1.setOnClickListener(new View.OnClickListener() {
                     public void onClick(View view) {
-                        Toast.makeText(view.getContext(),
-                                "Button clicked index = " + id_, Toast.LENGTH_SHORT)
-                                .show();
+                        buttonText = finalBtn.getText().toString();
                     }
                 });
             }
 
         }
-
+        
     public History getHistoryJSON() {
         String filePath = getBaseContext().getFilesDir().getAbsolutePath() + "/" + fileName;
         JSONResourceReader reader = new JSONResourceReader(filePath);
