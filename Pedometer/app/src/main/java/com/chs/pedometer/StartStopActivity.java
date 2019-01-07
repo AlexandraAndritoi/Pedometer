@@ -350,7 +350,7 @@ public class StartStopActivity extends AppCompatActivity implements SensorEventL
                     for(int loc = 0; loc < locations.size()-1; loc++) {
                         lat1 = locations.get(loc).getLatitude();
                         long1 = locations.get(loc).getLongitude();
-                        lat2 = locations.get(loc).getLatitude();
+                        lat2 = locations.get(loc + 1).getLatitude();
                         long2 = locations.get(loc + 1).getLongitude();
                         dLat = deg2rad(lat2-lat1);
                         dLon = deg2rad(long2-long1);
