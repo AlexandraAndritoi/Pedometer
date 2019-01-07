@@ -48,6 +48,7 @@ public class StartStopActivity extends AppCompatActivity implements SensorEventL
 
     private LocationManager locationManager;
     private ArrayList<Point> newLocations;
+    private static int interval = 0;
 
     private File file;
     private String fileName = "history12.json";
@@ -163,11 +164,12 @@ public class StartStopActivity extends AppCompatActivity implements SensorEventL
         measuredTime.append(timer.ToString());
         measuredSpeed.append(getSpeedToString(getAverageSpeed(this.getComputedDistance(),(int)timer.getElapsedTime())));
 
+        writeInHistory();
+
         sensorManager.unregisterListener(StartStopActivity.this);
 
         locationManager.removeUpdates(this);
 
-        writeInHistory();
     }
 
     public void onClickSeeOnMap(View v){
@@ -249,9 +251,7 @@ public class StartStopActivity extends AppCompatActivity implements SensorEventL
                 //set parameters of new route
                 int oldSteps = route.getSteps();
                 long oldTime = route.getTime();
-                int oldDistance = route.getDistance();
-                Double oldSpeed = route.getSpeed();
-                int totalDistance = oldDistance + mDistanceInt;
+                int totalDistance = this.getComputedDistance();
                 long totalTime = oldTime + mTimeLong;
                 Double avgSpeed = getAverageSpeed(totalDistance,(int)totalTime);
 
@@ -293,6 +293,7 @@ public class StartStopActivity extends AppCompatActivity implements SensorEventL
         } catch (Exception e) {
             e.printStackTrace();
         }
+        System.out.println("DIST1 " + distanceToString(this.getComputedDistance()));
     }
 
     @Override
