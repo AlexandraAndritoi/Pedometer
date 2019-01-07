@@ -25,7 +25,7 @@ public class HistoryMapsActivity extends FragmentActivity implements OnMapReadyC
 
     private GoogleMap mMap;
 
-    private String fileName = "history10.json";
+    private String fileName = "history12.json";
     private String selectedDate;
 
     @Override

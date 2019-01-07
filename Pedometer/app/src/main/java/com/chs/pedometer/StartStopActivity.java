@@ -50,7 +50,7 @@ public class StartStopActivity extends AppCompatActivity implements SensorEventL
     private ArrayList<Point> newLocations;
 
     private File file;
-    private String fileName = "history10.json";
+    private String fileName = "history12.json";
 
     Stopwatch timer = new Stopwatch();
 

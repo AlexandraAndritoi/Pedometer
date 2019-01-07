@@ -8,6 +8,7 @@ import android.util.Log;
 
 public class StepDetector {
     private long lastStepTimeNs = 0;
+    private final int h = 480;
 
     private StepListener listener;
 
@@ -27,7 +28,6 @@ public class StepDetector {
     }
 
     public StepDetector() {
-        int h = 480; // TODO: remove this constant
         mYOffset = h * 0.5f;
         mScale[0] = - (h * 0.5f * (1.0f / (SensorManager.STANDARD_GRAVITY * 2)));
         mScale[1] = - (h * 0.5f * (1.0f / (SensorManager.MAGNETIC_FIELD_EARTH_MAX)));

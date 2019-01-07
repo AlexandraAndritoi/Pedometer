@@ -25,7 +25,7 @@ import java.util.Date;
 
 public class HistoryActivity extends AppCompatActivity {
 
-    private String fileName = "history10.json";
+    private String fileName = "history12.json";
     private String buttonText;
     @Override
     protected void onCreate(Bundle savedInstanceState) {

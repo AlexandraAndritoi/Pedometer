@@ -32,7 +32,7 @@ public class SeeHistoryForADayActivity extends AppCompatActivity {
     TextView measuredDistance;
     TextView measuredSpeed;
 
-    private String fileName = "history10.json";
+    private String fileName = "history12.json";
     String selectedDate;
 
     Stopwatch timer = new Stopwatch();
@@ -61,9 +61,9 @@ public class SeeHistoryForADayActivity extends AppCompatActivity {
             String day = route.getDay();
             if(day.equals(selectedDate)){
                 countedSteps.setText("" + route.getSteps());
-                measuredDistance.setText("" + route.getDistance());
-                measuredSpeed.setText("" + route.getSpeed());
-                measuredTime.setText("" + route.getTime());
+                measuredDistance.setText("" + getDistanceToString(route.getDistance()));
+                measuredSpeed.setText("" + getSpeedToString(route.getSpeed()));
+                measuredTime.setText("" + getTimeToString((int)route.getTime()));
             }
         }
     }
@@ -93,6 +93,18 @@ public class SeeHistoryForADayActivity extends AppCompatActivity {
 
         //File f = new File(getBaseContext().getFilesDir().getAbsolutePath() + "/history.json");
 
+    }
+
+    public String getSpeedToString(Double v) {
+        return v + " km/h";
+    }
+
+    public String getDistanceToString(int dist) {
+        return dist/1000 + " km  " + dist%1000 + " m";
+    }
+
+    public String getTimeToString(int timeSec) {
+        return timeSec/3600 + " h  " + (timeSec%3600)/60 + " m  " + timeSec%60 + " s";
     }
 
     public History getHistoryJSON() {
